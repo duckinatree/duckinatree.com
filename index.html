@@ -72,31 +72,23 @@
                  drift 18s var(--ease) 0.1s forwards;
     }
 
-    /* Bottom scrim: the frame fading into the page, and the runway the
-       titles sit on. */
+    /* The frame keeps a hard bottom edge; only a soft vignette remains. */
     .frame__media::after {
       content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
       background:
-        linear-gradient(to top,
-          var(--black) 0%,
-          rgba(0, 0, 0, 0.88) 14%,
-          rgba(0, 0, 0, 0.45) 34%,
-          rgba(0, 0, 0, 0.06) 58%,
-          transparent 72%),
         radial-gradient(120% 90% at 50% 40%,
           transparent 55%,
           rgba(0, 0, 0, 0.5) 100%);
     }
 
+    /* The titles sit beneath the frame on black, not over the picture:
+       with no scrim there is no dark runway to keep them legible. */
     .titles {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 0 clamp(1.5rem, 6vw, 6rem) clamp(2rem, 6vh, 5rem);
+      padding: clamp(1.75rem, 5vh, 3rem) 1.5rem clamp(2rem, 6vh, 3.5rem);
+      text-align: center;
       opacity: 0;
       animation: rise 1.2s var(--ease) 0.55s forwards;
     }
@@ -149,23 +141,13 @@
        from under it, so nothing crowds the two faces. */
     @media (max-width: 640px) {
       .frame__media { max-height: 62vh; max-height: 62dvh; }
-      .titles {
-        position: static;
-        padding: clamp(1.5rem, 5vh, 2.5rem) 1.25rem clamp(2.5rem, 8vh, 4rem);
-        text-align: center;
-      }
       .tagline { letter-spacing: 0.14em; max-width: 32ch; margin-inline: auto; }
     }
 
     /* No photograph on disk? Fall back to the wordmark alone rather than
        a broken-image placeholder. */
     .no-photo .frame__media { display: none; }
-    .no-photo .titles {
-      position: static;
-      padding: 2rem 1.5rem;
-      text-align: center;
-      animation-delay: 0.1s;
-    }
+    .no-photo .titles { animation-delay: 0.1s; }
 
     @media (prefers-reduced-motion: reduce) {
       .photo, .titles { animation: none; opacity: 1; transform: none; }
