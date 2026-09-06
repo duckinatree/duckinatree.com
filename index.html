@@ -3,32 +3,78 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <title>Duck In A Tree</title>
-  <meta name="description" content="" />
-  <meta name="keywords" content="" />
+  <meta name="description" content="Duck In A Tree — film, production, sound recording, and life." />
   <meta property="og:title" content="Duck In A Tree" />
-  <meta property="og:description" content="" />
+  <meta property="og:description" content="Film, production, sound recording, and life." />
   <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --grey: #9c9c9c;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      background: #000;
-      color: #fff;
       margin: 0;
       min-height: 100vh;
+      background: var(--black);
+      color: var(--white);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
+      padding: 6rem 1.5rem 4rem;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    p {
+      margin: 1.25rem 0 0;
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      font-weight: 300;
+      color: var(--grey);
+      letter-spacing: 0.02em;
+    }
+
+    figure {
+      margin: 4rem 0 0;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: grayscale(100%);
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 4rem 1rem 2rem; }
+      figure { margin-top: 2.5rem; }
     }
   </style>
 </head>
 <body>
-  <header>
-  </header>
   <main>
-      <h1>Duck In A Tree</h1>
-      <p>Film, production, sound recording, and life.</p>
+    <h1>Duck In A Tree</h1>
+    <p>Film, production, sound recording, and life.</p>
+    <figure>
+      <img alt="Two crew members on a documentary shoot: a man with headphones holding a boom pole, and a woman in glasses looking down at a monitor." src="crew.jpg">
+    </figure>
   </main>
-  <footer></footer>
 </body>
 </html>
