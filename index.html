@@ -50,9 +50,9 @@
       min-height: 0;
     }
 
-    /* The photograph is never cropped at the sides: it holds its own
-       16:9 frame and bleeds the full width of the page. Letterboxing above
-       and below is the point, not a side effect. */
+    /* The whole photograph is always visible. It scales to fit the space
+       left over after the type, never cropping; any bars around it are
+       page-black, so they read as letterboxing rather than as gaps. */
     .frame {
       position: relative;
       width: 100%;
@@ -70,31 +70,19 @@
       flex: 0 1 auto;
       min-height: 0;
       overflow: hidden;
-      background: #0a0a0a;
+      background: var(--black);
     }
 
     .photo {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: 50% 32%;
+      object-fit: contain;
+      object-position: center;
       display: block;
       opacity: 0;
       transform: scale(1.06);
       animation: reveal 1.6s var(--ease) 0.1s forwards,
                  drift 18s var(--ease) 0.1s forwards;
-    }
-
-    /* The frame keeps a hard bottom edge; only a soft vignette remains. */
-    .frame__media::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(120% 90% at 50% 40%,
-          transparent 55%,
-          rgba(0, 0, 0, 0.5) 100%);
     }
 
     /* The titles sit beneath the frame on black, not over the picture:
