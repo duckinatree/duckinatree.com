@@ -3,63 +3,192 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
   <title>Duck In A Tree</title>
-  <meta name="description" content="Duck In A Tree — film, production, sound recording, and life." />
+  <meta name="description" content="Duck In A Tree — a documentary film team. Film, production, sound recording, and life." />
+  <meta property="og:type" content="website" />
   <meta property="og:title" content="Duck In A Tree" />
   <meta property="og:description" content="Film, production, sound recording, and life." />
+  <meta property="og:image" content="https://duckinatree.com/joan-and-alan.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preload" as="image" href="joan-and-alan.webp">
   <style>
     :root {
       --black: #000;
       --white: #fff;
       --grey: #9c9c9c;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * { box-sizing: border-box; }
 
+    html, body { background: var(--black); }
+
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--black);
+      min-height: 100dvh;
       color: var(--white);
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 6rem 1.5rem 4rem;
+      display: grid;
+      place-items: center;
+      overflow-x: hidden;
     }
 
-    main {
+    .stage {
       width: 100%;
-      max-width: 1100px;
+      display: grid;
+      place-items: center;
+    }
+
+    /* The photograph is never cropped at the sides: it holds its own
+       16:9 frame, bleeds the full width of the page, and dissolves into
+       the black at its bottom edge. Letterboxing above and below is the
+       point, not a side effect. */
+    .frame {
+      position: relative;
+      width: 100%;
+    }
+
+    .frame__media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      max-height: 88vh;
+      max-height: 88dvh;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    .photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 32%;
+      display: block;
+      opacity: 0;
+      transform: scale(1.06);
+      animation: reveal 1.6s var(--ease) 0.1s forwards,
+                 drift 18s var(--ease) 0.1s forwards;
+    }
+
+    /* Bottom scrim: the frame fading into the page, and the runway the
+       titles sit on. */
+    .frame__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to top,
+          var(--black) 0%,
+          rgba(0, 0, 0, 0.88) 14%,
+          rgba(0, 0, 0, 0.45) 34%,
+          rgba(0, 0, 0, 0.06) 58%,
+          transparent 72%),
+        radial-gradient(120% 90% at 50% 40%,
+          transparent 55%,
+          rgba(0, 0, 0, 0.5) 100%);
+    }
+
+    .titles {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0 clamp(1.5rem, 6vw, 6rem) clamp(2rem, 6vh, 5rem);
+      opacity: 0;
+      animation: rise 1.2s var(--ease) 0.55s forwards;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(2.5rem, 7vw, 5.5rem);
-      font-weight: 300;
-      letter-spacing: -0.02em;
-      line-height: 1;
+      font-size: clamp(2.25rem, 7.5vw, 6rem);
+      font-weight: 200;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      text-wrap: balance;
     }
 
-    p {
-      margin: 1.25rem 0 0;
-      font-size: clamp(1rem, 1.6vw, 1.25rem);
-      font-weight: 300;
+    .tagline {
+      margin: clamp(0.75rem, 1.6vh, 1.35rem) 0 0;
+      font-size: clamp(0.7rem, 1.05vw, 0.9rem);
+      font-weight: 400;
       color: var(--grey);
-      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      line-height: 1.6;
+      text-wrap: balance;
     }
 
-    @media (max-width: 600px) {
-      body { padding: 4rem 1rem 2rem; }
+    /* Film grain — a whisper of it, over everything. */
+    .grain {
+      position: fixed;
+      inset: -50%;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: flicker 0.9s steps(3) infinite;
+    }
+
+    @keyframes reveal { to { opacity: 1; } }
+    @keyframes drift  { to { transform: scale(1); } }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(1.25rem); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes flicker {
+      0%   { transform: translate(0, 0); }
+      33%  { transform: translate(-2%, 1%); }
+      66%  { transform: translate(1%, -2%); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* Narrow screens: the photo becomes a band and the titles step out
+       from under it, so nothing crowds the two faces. */
+    @media (max-width: 640px) {
+      .frame__media { max-height: 62vh; max-height: 62dvh; }
+      .titles {
+        position: static;
+        padding: clamp(1.5rem, 5vh, 2.5rem) 1.25rem clamp(2.5rem, 8vh, 4rem);
+        text-align: center;
+      }
+      .tagline { letter-spacing: 0.14em; max-width: 32ch; margin-inline: auto; }
+    }
+
+    /* No photograph on disk? Fall back to the wordmark alone rather than
+       a broken-image placeholder. */
+    .no-photo .frame__media { display: none; }
+    .no-photo .titles {
+      position: static;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      animation-delay: 0.1s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .photo, .titles { animation: none; opacity: 1; transform: none; }
+      .grain { animation: none; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Duck In A Tree</h1>
-    <p>Film, production, sound recording, and life.</p>
+  <main class="stage">
+    <div class="frame">
+      <div class="frame__media">
+        <img class="photo" src="joan-and-alan.webp" width="681" height="383"
+             alt="Joan and Alan of Duck In A Tree recording on location in a
+                  wallpapered room — one wearing headphones and holding a boom
+                  pole, the other standing beside a microphone."
+             onerror="document.documentElement.classList.add('no-photo')">
+      </div>
+      <div class="titles">
+        <h1>Duck In A Tree</h1>
+        <p class="tagline">Film, production, sound recording, and life.</p>
+      </div>
+    </div>
   </main>
+  <div class="grain" aria-hidden="true"></div>
 </body>
 </html>
