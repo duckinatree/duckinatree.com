@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#000000">
   <title>Duck in a Tree</title>
-  <meta name="description" content="Duck in a Tree — a documentary film team. Film, production, sound recording, and life." />
+  <meta name="description" content="Duck in a Tree — a documentary film team. Just pretend we're not here." />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Duck in a Tree" />
-  <meta property="og:description" content="Film, production, sound recording, and life." />
+  <meta property="og:description" content="Just pretend we're not here." />
   <meta property="og:image" content="https://duckinatree.com/joan-and-alan.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="preload" as="image" href="joan-and-alan.webp">
@@ -17,6 +17,7 @@
       --black: #000;
       --white: #fff;
       --grey: #9c9c9c;
+      --dim: #6b6b6b;
       --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -30,15 +31,23 @@
       min-height: 100dvh;
       color: var(--white);
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      display: grid;
-      place-items: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow-x: hidden;
     }
 
+    /* The frame and its titles are one column that must fit the viewport:
+       the picture shrinks to make room for the type rather than pushing it
+       off the bottom on a short or landscape window. */
     .stage {
       width: 100%;
-      display: grid;
-      place-items: center;
+      max-height: 100vh;
+      max-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
     }
 
     /* The photograph is never cropped at the sides: it holds its own
@@ -47,6 +56,9 @@
     .frame {
       position: relative;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
     }
 
     .frame__media {
@@ -55,6 +67,8 @@
       aspect-ratio: 16 / 9;
       max-height: 88vh;
       max-height: 88dvh;
+      flex: 0 1 auto;
+      min-height: 0;
       overflow: hidden;
       background: #0a0a0a;
     }
@@ -86,6 +100,7 @@
     /* The titles sit beneath the frame on black, not over the picture:
        with no scrim there is no dark runway to keep them legible. */
     .titles {
+      flex: 0 0 auto;
       padding: clamp(1.75rem, 5vh, 3rem) 1.5rem clamp(2rem, 6vh, 3.5rem);
       text-align: center;
       opacity: 0;
@@ -110,6 +125,15 @@
       letter-spacing: 0.22em;
       line-height: 1.6;
       text-wrap: balance;
+    }
+
+    .credit {
+      margin: clamp(1.1rem, 2.4vh, 1.75rem) 0 0;
+      font-size: clamp(0.62rem, 0.85vw, 0.75rem);
+      font-weight: 400;
+      color: var(--dim);
+      letter-spacing: 0.08em;
+      line-height: 1.5;
     }
 
     /* Film grain — a whisper of it, over everything. */
@@ -140,7 +164,7 @@
        from under it, so nothing crowds the two faces. */
     @media (max-width: 640px) {
       .frame__media { max-height: 62vh; max-height: 62dvh; }
-      .tagline { letter-spacing: 0.14em; max-width: 32ch; margin-inline: auto; }
+      .tagline { letter-spacing: 0.14em; }
     }
 
     /* No photograph on disk? Fall back to the wordmark alone rather than
@@ -166,7 +190,8 @@
       </div>
       <div class="titles">
         <h1>Duck in a Tree</h1>
-        <p class="tagline">Film, production, sound recording, and life.</p>
+        <p class="tagline">Just Pretend we're not here</p>
+        <p class="credit">Photo by Haskell Wexler</p>
       </div>
     </div>
   </main>
